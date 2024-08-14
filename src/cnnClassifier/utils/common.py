@@ -1,7 +1,12 @@
+import sys
 import os
+
+
+
 from box.exceptions import BoxValueError
 import yaml
-from cnnClassifier import logger
+
+
 import json
 import joblib
 from ensure import ensure_annotations
@@ -10,6 +15,15 @@ from pathlib import Path
 from typing import Any
 import base64
 
+import sys
+from pathlib import Path
+
+# Get the current file's directory and add the 'src' directory to sys.path
+current_dir = Path(__file__).resolve().parent
+src_dir = current_dir.parent
+sys.path.append(str(src_dir))
+
+from cnnClassifier import logger
 
 
 @ensure_annotations
