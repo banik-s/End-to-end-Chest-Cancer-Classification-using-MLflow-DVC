@@ -163,7 +163,9 @@ cython_debug/
 
 extracted_files
 # Ignore large files
+
 artifacts/prepare_base_model/base_model_updated.h5
+
 artifacts/prepare_base_model/base_model.h5
 
 research/artifacts/training/model.h5
