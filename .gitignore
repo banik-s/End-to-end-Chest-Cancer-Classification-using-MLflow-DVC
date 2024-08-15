@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 extracted_files
-training
-prepare_base_model
+# Ignore large files
+research/artifacts/training/model.h5
