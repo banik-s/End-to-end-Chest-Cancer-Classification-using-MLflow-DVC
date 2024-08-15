@@ -12,6 +12,7 @@ pyYAML
 tqdm
 ensure==1.0.2
 joblib
+pillow
 types-PyYAML
 scipy
 Flask
