@@ -161,7 +161,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-extracted_files
+research/extracted_files/Chest-CT-Scan-data/
 # Ignore large files
 
 artifacts/prepare_base_model/base_model_updated.h5
