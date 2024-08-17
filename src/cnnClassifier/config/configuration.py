@@ -23,13 +23,14 @@ class ConfigurationManager:
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         config = self.config.data_ingestion
 
-        create_directories([config.root_dir])
+        # Ensure that the root directory for data ingestion exists
+        create_directories([self.data_ingestion_dir])
 
         data_ingestion_config = DataIngestionConfig(
-            root_dir=config.root_dir,
-            source_URL=config.source_URL,
-            local_data_file=config.local_data_file,
-            unzip_dir=config.unzip_dir 
+            root_dir=self.data_ingestion_dir,
+            source_URL="https://drive.google.com/file/d/1z0mreUtRmR-P-magILsDR3T7M6IkGXtY/view?usp=sharing",
+            local_data_file=self.data_ingestion_dir / "data.zip",  # Correct file path for ZIP file
+            unzip_dir=self.data_ingestion_dir
         )
 
         return data_ingestion_config
@@ -59,7 +60,7 @@ class ConfigurationManager:
         training = self.config.training
         prepare_base_model = self.config.prepare_base_model
         params = self.params
-        training_data = Path(r'C:\Users\Swarnendu\Desktop\End-to-end-Chest-Cancer-Classification-using-MLflow-DVC\research\extracted_files\Chest-CT-Scan-data')
+        training_data = Path(r'C:\Users\Swarnendu\Desktop\End-to-end-Chest-Cancer-Classification-using-MLflow-DVC\artifacts\data_ingestion')
         create_directories([Path(training.root_dir)])
 
         training_config = TrainingConfig(
@@ -74,14 +75,18 @@ class ConfigurationManager:
         )
 
         return training_config
+
     
 
 
 
     def get_evaluation_config(self) -> EvaluationConfig:
+        # Define the base directory where the script is executed
         base_dir = Path.cwd()
-        model_path = base_dir / "research" / "artifacts" / "training" / "model.h5"
-        training_data_path = base_dir / "research" / "extracted_files" / "Chest-CT-Scan-data"
+
+        # Define the relative path to your model file and data directory
+        model_path = base_dir / "artifacts" / "training" / "model.h5"
+        training_data_path = base_dir / "artifacts" / "data_ingestion" / "Chest-CT-Scan-data"
 
         # Ensure paths exist
         if not model_path.exists():
@@ -98,7 +103,6 @@ class ConfigurationManager:
             params_batch_size=self.params.BATCH_SIZE
         )
         return eval_config
-
 
 
       

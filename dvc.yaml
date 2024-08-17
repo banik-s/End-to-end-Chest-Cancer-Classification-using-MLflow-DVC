@@ -5,7 +5,7 @@ stages:
       - src/cnnClassifier/pipeline/stage_01_data_ingestion.py
       - config/config.yaml
     outs:
-      - research/extracted_files/Chest-CT-Scan-data
+      - artifacts/data_ingestion/Chest-CT-Scan-data
 
 
   prepare_base_model:
@@ -28,7 +28,7 @@ stages:
     deps:
       - src/cnnClassifier/pipeline/stage_03_model_trainer.py
       - config/config.yaml
-      - research/extracted_files/Chest-CT-Scan-data
+      - artifacts/data_ingestion/Chest-CT-Scan-data
       - artifacts/prepare_base_model
     params:
       - IMAGE_SIZE
@@ -36,7 +36,7 @@ stages:
       - BATCH_SIZE
       - AUGMENTATION
     outs:
-      - research/artifacts/training/model.h5
+      - artifacts/training/model.h5
 
 
   evaluation:
@@ -44,8 +44,8 @@ stages:
     deps:
       - src/cnnClassifier/pipeline/stage_04_model_evaluation.py
       - config/config.yaml
-      - research/extracted_files/Chest-CT-Scan-data
-      - research/artifacts/training/model.h5
+      - artifacts/data_ingestion/Chest-CT-Scan-data
+      - artifacts/training/model.h5
     params:
       - IMAGE_SIZE
       - BATCH_SIZE

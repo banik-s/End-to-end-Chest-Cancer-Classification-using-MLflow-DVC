@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: cnnClassifier
+Version: 0.0.0
+Summary: A small python package for CNN app
+Home-page: https://github.com/banik-s/Chest-Cancer-Classification-Project
+Author: banik-s
+Author-email: swarnendu.banik28@gmail.com
+Project-URL: Bug Tracker, https://github.com/banik-s/Chest-Cancer-Classification-Project/issues
+License-File: LICENSE
+
+# End-to-end-Chest-Cancer-Classification-using-MLflow-DVC
