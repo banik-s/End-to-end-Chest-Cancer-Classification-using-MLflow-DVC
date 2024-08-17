@@ -1,4 +1,7 @@
+import sys
+sys.path.append('C:/Users/Swarnendu/Desktop/End-to-end-Chest-Cancer-Classification-using-MLflow-DVC/src')
 import os
+ 
 from cnnClassifier.constants import *
 from cnnClassifier.utils.common import read_yaml, create_directories, save_json
 from cnnClassifier.entity.config_entity import (DataIngestionConfig,
@@ -7,29 +10,41 @@ from cnnClassifier.entity.config_entity import (DataIngestionConfig,
                                                 EvaluationConfig)
 
 
+
+from pathlib import Path
+
+def create_directories(paths):
+    for path in paths:
+        # Convert the path to a Path object if it's not already
+        path = Path(path)
+        if not path.exists():
+            path.mkdir(parents=True, exist_ok=True)
 class ConfigurationManager:
     def __init__(
         self,
-        config_filepath = CONFIG_FILE_PATH,
-        params_filepath = PARAMS_FILE_PATH):
+        config_filepath=CONFIG_FILE_PATH,
+        params_filepath=PARAMS_FILE_PATH):
 
         self.config = read_yaml(config_filepath)
         self.params = read_yaml(params_filepath)
 
-        create_directories([self.config.artifacts_root])
+        # Get the artifacts root directory from the config and ensure it exists
+        self.artifacts_root = self.config['artifacts_root']
+        create_directories([self.artifacts_root])
 
+        # Define data_ingestion_dir
+        self.data_ingestion_dir = os.path.join(self.artifacts_root, self.config['data_ingestion']['root_dir'])
 
-    
     def get_data_ingestion_config(self) -> DataIngestionConfig:
-        config = self.config.data_ingestion
+        config = self.config['data_ingestion']
 
         # Ensure that the root directory for data ingestion exists
         create_directories([self.data_ingestion_dir])
 
         data_ingestion_config = DataIngestionConfig(
             root_dir=self.data_ingestion_dir,
-            source_URL="https://drive.google.com/file/d/1z0mreUtRmR-P-magILsDR3T7M6IkGXtY/view?usp=sharing",
-            local_data_file=self.data_ingestion_dir / "data.zip",  # Correct file path for ZIP file
+            source_URL=config['source_URL'],
+            local_data_file=os.path.join(self.data_ingestion_dir, "data.zip"),  # Correct file path for ZIP file
             unzip_dir=self.data_ingestion_dir
         )
 
@@ -60,7 +75,7 @@ class ConfigurationManager:
         training = self.config.training
         prepare_base_model = self.config.prepare_base_model
         params = self.params
-        training_data = Path(r'C:\Users\Swarnendu\Desktop\End-to-end-Chest-Cancer-Classification-using-MLflow-DVC\artifacts\data_ingestion')
+        training_data = Path(r'C:\Users\Swarnendu\Desktop\End-to-end-Chest-Cancer-Classification-using-MLflow-DVC\artifacts\artifacts\data_ingestion')
         create_directories([Path(training.root_dir)])
 
         training_config = TrainingConfig(
@@ -85,8 +100,8 @@ class ConfigurationManager:
         base_dir = Path.cwd()
 
         # Define the relative path to your model file and data directory
-        model_path = base_dir / "artifacts" / "training" / "model.h5"
-        training_data_path = base_dir / "artifacts" / "data_ingestion" / "Chest-CT-Scan-data"
+        model_path = base_dir / "artifacts" / "training" / "model.keras"
+        training_data_path = base_dir / "artifacts" / "artifacts" / "data_ingestion" / "Chest-CT-Scan-data"
 
         # Ensure paths exist
         if not model_path.exists():

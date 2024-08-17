@@ -1,3 +1,7 @@
+
+import sys
+sys.path.append('C:/Users/Swarnendu/Desktop/End-to-end-Chest-Cancer-Classification-using-MLflow-DVC/src')
+
 from cnnClassifier import logger
 from cnnClassifier.pipeline.stage_01_data_ingestion import DataIngestionTrainingPipeline
 from cnnClassifier.pipeline.stage_02_prepare_base_model import PrepareBaseModelTrainingPipeline

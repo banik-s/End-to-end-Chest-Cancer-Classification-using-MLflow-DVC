@@ -18,14 +18,14 @@ class Training:
         self.config = config
 
     def get_base_model(self):
-        # Load the base model from the specified path
-        base_model_path = Path(r'C:\Users\Swarnendu\Desktop\End-to-end-Chest-Cancer-Classification-using-MLflow-DVC\artifacts\prepare_base_model\base_model.h5')
+        # Load the base model from the specified path using forward slashes or raw string
+        base_model_path = Path(r'C:/Users/Swarnendu/Desktop/End-to-end-Chest-Cancer-Classification-using-MLflow-DVC/artifacts/prepare_base_model/base_model.h5')
         base_model = tf.keras.models.load_model(base_model_path)
 
         # Add new layers to the model
         x = base_model.output
-        x = tf.keras.layers.Flatten()(x)  # Flatten the output of the base model if necessary
-        x = tf.keras.layers.Dense(2, activation='softmax')(x)  # For binary classification; use Dense(1, activation='sigmoid') if needed
+        x = tf.keras.layers.Flatten()(x)
+        x = tf.keras.layers.Dense(2, activation='softmax')(x)
 
         # Create a new model
         self.model = tf.keras.Model(inputs=base_model.input, outputs=x)
@@ -33,9 +33,10 @@ class Training:
         # Compile the model
         self.model.compile(
             optimizer=tf.keras.optimizers.Adam(),
-            loss=tf.keras.losses.BinaryCrossentropy(),  # Use SparseCategoricalCrossentropy for multiclass classification
+            loss=tf.keras.losses.BinaryCrossentropy(),
             metrics=['accuracy']
         )
+
 
     def train_valid_generator(self):
         datagenerator_kwargs = dict(
@@ -82,7 +83,11 @@ class Training:
 
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
+        # Ensure the directory exists
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path = path.with_suffix('.keras')
         model.save(path)
+
 
     def train(self):
         self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
